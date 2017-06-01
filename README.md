@@ -1,3 +1,6 @@
+# WIP DISCLAMER
+We currently have no releases, this project is not working as of now, don't try to use it in production.
+
 # EBANX Payment Gateway for WooCommerce
 
 This plugin enables you to integrate your WooCommerce store with the EBANX payment gateway.
