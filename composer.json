@@ -1,0 +1,38 @@
+{
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/ebanx/benjamin"
+        }
+    ],
+
+    "name": "ebanx/ebanx-woocommerce-gateway",
+    "description": "EBANX gateway for woocommerce",
+    "type": "project",
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "Ebanx\\WooCommerce\\": "ebanx-woocommerce-gateway/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "require": {
+        "ebanx/benjamin": "dev-master"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^4.8",
+        "sebastian/phpcpd": "^2.0.4"
+    },
+    "scripts": {
+        "test": "phpunit && phpcpd ebanx-woocommerce-gateway --exclude=\"vendor\" && phpcpd tests",
+        "test-filter": "phpunit --filter"
+    },
+    "config": {
+        "vendor-dir": "ebanx-woocommerce-gateway/vendor"
+    }
+}
