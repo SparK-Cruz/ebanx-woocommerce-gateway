@@ -23,6 +23,7 @@ if ( class_exists('WC_EBANX') ) {
 
 require __DIR__ . '/vendor/autoload.php';
 
+use Ebanx\Benjamin\Facade as Benjamin;
 use Ebanx\Benjamin\Models\Configs\Config;
 
 class WC_EBANX {
@@ -36,12 +37,16 @@ class WC_EBANX {
 	protected static $instance;
 
 	/**
+	 * @var Benjamin
+	 */
+	private $ebanx;
+
+	/**
 	 * The singleton acessor.
 	 *
 	 * @return WC_EBANX
 	 */
-	public static function get_instance()
-	{
+	public static function get_instance() {
 		if ( ! self::$instance ) {
 			self::$instance = new self();
 		}
@@ -50,14 +55,22 @@ class WC_EBANX {
 	}
 
 	private function __construct() {
-		$this->ebanx = EBANX(new Config());
+		add_filter( 'woocommerce_payment_gateways', array($this, 'add_gateways') );
 
-		add_filter( 'woocommerce_payment_gateways', 'add_gateways' );
+		$config_gateway = new Gateways\Configuration();
 
-		add_action( 'admin_notices', function() {
-			echo '<div class="notice notice-info"><p>WE HAVE A PROJECT SEED!</p></div>';
-			echo '<div class="notice notice-info"><p>This project uses our brand new lib: '.get_class($this->ebanx).'</p></div>';
-		} );
+		$this->ebanx = EBANX(new Config(array(
+			'baseCurrency' => strtoupper(get_woocommerce_currency()),
+			'integration_key' => $config_gateway->get_setting_or_default('live_private_key'),
+			'sandbox_integration_key' => $config_gateway->get_setting_or_default('sandbox_private_key'),
+		)));
+	}
+
+	/**
+	 * @return Benjamin
+	 */
+	public function get_ebanx() {
+		return $this->ebanx;
 	}
 
 	/**
@@ -66,10 +79,14 @@ class WC_EBANX {
 	 * @param  array $methods WooCommerce payment methods.
 	 * @return array
 	 */
-	public function add_gateways($methods)
-	{
-		// Sample
-		//$methods[] = 'Ebanx\WooCommerce\Gateways\Something';
+	public function add_gateways($methods) {
+		if ( is_admin() ) {
+			$methods[] = 'Ebanx\WooCommerce\Gateways\Configuration';
+			return $methods;
+		}
+
+		$methods[] = 'Ebanx\WooCommerce\Gateways\SampleGateway';
+
 		return $methods;
 	}
 }

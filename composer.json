@@ -22,7 +22,7 @@
         }
     },
     "require": {
-        "ebanx/benjamin": "dev-master"
+        "ebanx/benjamin": "dev-feature/switch-to-static-methods"
     },
     "require-dev": {
         "phpunit/phpunit": "^4.8",
