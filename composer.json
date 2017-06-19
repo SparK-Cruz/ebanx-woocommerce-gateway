@@ -1,11 +1,4 @@
 {
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/ebanx/benjamin"
-        }
-    ],
-
     "name": "ebanx/ebanx-woocommerce-gateway",
     "description": "EBANX gateway for woocommerce",
     "type": "project",
